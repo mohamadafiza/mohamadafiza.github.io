@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamad Afiza's Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            background: #1a202c;
+            color: #e2e8f0;
+            font-family: 'Arial', sans-serif;
+        }
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            z-index: 1000;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <canvas id="particles"></canvas>
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="card text-center max-w-md mx-auto">
+        <h1 class="text-4xl font-bold mb-4">Mohamad Afiza bin Hamzah</h1>
+        <p class="text-lg mb-2">Welcome to my digital space!</p>
+        <p class="text-md mb-4">This site is under development, but feel free to explore the vibes!</p>
+        <div class="space-y-2">
+            <p><strong>Contact:</strong> <a href="mailto:github@pja.my" class="text-blue-400 hover:underline">github@pja.my</a></p>
+            <p><strong>Facebook/Instagram:</strong> <a href="https://www.instagram.com/mohamadafiza" target="_blank" class="text-blue-400 hover:underline">mohamadafiza</a></p>
+        </div>
+        <div class="mt-6">
+            <button id="toggleParticles" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition">Toggle Particles</button>
+        </div>
+    </div>
+
+    <script>
+        // Particle Animation
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        const numberOfParticles = 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.1;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        let isAnimating = true;
+        function animateParticles() {
+            if (!isAnimating) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.2) {
+                    particlesArray.splice(i, 1);
+                    particlesArray.push(new Particle());
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // Toggle Particles
+        document.getElementById('toggleParticles').addEventListener('click', () => {
+            isAnimating = !isAnimating;
+            if (isAnimating) {
+                animateParticles();
+            }
+        });
+
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Resize Canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+    </script>
+</body>
+</html>
