@@ -3,28 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting to J&T Tracking...</title>
-    <meta http-equiv="refresh" content="0; url=/jnt/">
+    <title>Page Not Found (404)</title>
+    <meta http-equiv="refresh" content="5; url=/"> <!-- Fallback redirect to homepage after 5s -->
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f4f4f4; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #007bff; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
 </head>
-<body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
-    <h1>Redirecting...</h1>
-    <p>Loading J&T Courier Tracking. If not automatic, <a href="/jnt/">click here</a>.</p>
+<body>
+    <div class="container">
+        <h1>404 - Page Not Found</h1>
+        <p>Sorry, the page you're looking for doesn't exist.</p>
+        <p>If this is a J&T tracking link, <a href="/jnt/">try the tracking tool here</a>.</p>
+        <p>Otherwise, <a href="/">return to the homepage</a> or check out my <a href="/jnt/">J&T Courier Tracking tool</a>.</p>
+    </div>
+
     <script>
         (function() {
             const path = window.location.pathname;
-            // Match /jnt/ followed by 12 digits (e.g., /jnt/631858353745)
-            const match = path.match(/\/jnt\/(\d{12})/i);
-            if (match) {
-                const trackingNum = match[1];
-                // Redirect to /jnt/ with query param for auto-fill
+            
+            // Specific handling for J&T paths (e.g., /jnt/631858353745)
+            const jntMatch = path.match(/\/jnt\/(\d{12})/i);
+            if (jntMatch) {
+                const trackingNum = jntMatch[1];
                 const redirectUrl = `/jnt/?tracking=${trackingNum}`;
-                // Optional: Store original path to restore "pretty" URL later
-                sessionStorage.setItem('originalPath', path);
+                sessionStorage.setItem('originalPath', path); // For pretty URL restore in jnt/index.html
                 window.location.replace(redirectUrl);
-            } else {
-                // For other 404s, go to main J&T page
-                window.location.replace('/jnt/');
+                return;
             }
+            
+            // Optional: Add more specific redirects for other projects here
+            // e.g., if (path.startsWith('/other-project/')) { window.location.replace('/other-project/'); }
+            
+            // For all other 404s, do nothing—show the custom message above
+            // (The meta refresh will send to / after 5s as fallback)
+            
+            document.title = '404 - Page Not Found | mohamadafiza.github.io';
         })();
     </script>
 </body>
