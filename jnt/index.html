@@ -199,7 +199,7 @@
                 trackingNumber = url.search.slice(1); // Remove '?'
             }
 
-            // Enhanced path check for /tool/jnt/631858353745 (last segment after /jnt/)
+            // Enhanced path check for /jnt/631858353745 (last segment after /jnt/)
             if (!trackingNumber) {
                 const pathParts = url.pathname.split('/').filter(part => part); // Remove empty parts
                 // If the path ends with /jnt/, look for the next segment as tracking number
