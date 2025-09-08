@@ -304,6 +304,13 @@
                     trackPackage();
                 }
             }
+
+            // Restore pretty URL after query redirect
+            const originalPath = sessionStorage.getItem('originalPath');
+            if (originalPath && originalPath.match(/\/jnt\/\d{12}$/)) {
+                history.replaceState(null, '', originalPath); // Updates URL without reload
+                sessionStorage.removeItem('originalPath');
+            }
         });
 
         // Manual input listener
