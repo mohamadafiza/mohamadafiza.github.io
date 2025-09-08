@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to J&T Tracking...</title>
+    <meta http-equiv="refresh" content="0; url=/jnt/">
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+    <h1>Redirecting...</h1>
+    <p>Loading J&T Courier Tracking. If not automatic, <a href="/jnt/">click here</a>.</p>
+    <script>
+        (function() {
+            const path = window.location.pathname;
+            // Match /jnt/ followed by 12 digits (e.g., /jnt/631858353745)
+            const match = path.match(/\/jnt\/(\d{12})/i);
+            if (match) {
+                const trackingNum = match[1];
+                // Redirect to /jnt/ with query param for auto-fill
+                const redirectUrl = `/jnt/?tracking=${trackingNum}`;
+                // Optional: Store original path to restore "pretty" URL later
+                sessionStorage.setItem('originalPath', path);
+                window.location.replace(redirectUrl);
+            } else {
+                // For other 404s, go to main J&T page
+                window.location.replace('/jnt/');
+            }
+        })();
+    </script>
+</body>
+</html>
